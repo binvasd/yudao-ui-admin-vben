@@ -43,6 +43,7 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.lock();
     // 提交表单
     const data = (await formApi.getValues()) as SystemUserApi.User;
+    data.deptId = 100; // 将部门编号锁定为100
     try {
       await (formData.value?.id ? updateUser(data) : createUser(data));
       // 关闭并提示

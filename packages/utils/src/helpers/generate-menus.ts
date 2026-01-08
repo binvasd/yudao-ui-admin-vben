@@ -133,8 +133,11 @@ function convertServerMenuToRouteRecordStringComponent(
     }
 
     // path
-    if (parent) {
+    if (parent && !isHttpUrl(menu.path)) {
+      // ← ✅ 关键修复！
       menu.path = `${parent}/${menu.path}`;
+    } else if (isHttpUrl(menu.path)) {
+      menu.path = `/${menu.path}`;
     }
 
     if (!menu.path.startsWith('/')) {

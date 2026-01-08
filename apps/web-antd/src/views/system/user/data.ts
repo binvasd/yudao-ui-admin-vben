@@ -5,11 +5,8 @@ import type { SystemUserApi } from '#/api/system/user';
 import { CommonStatusEnum, DICT_TYPE } from '@vben/constants';
 import { getDictOptions } from '@vben/hooks';
 import { $t } from '@vben/locales';
-import { handleTree } from '@vben/utils';
 
 import { z } from '#/adapter/form';
-import { getDeptList } from '#/api/system/dept';
-import { getSimplePostList } from '#/api/system/post';
 import { getSimpleRoleList } from '#/api/system/role';
 import { getRangePickerDefaultProps } from '#/utils';
 
@@ -51,34 +48,6 @@ export function useFormSchema(): VbenFormSchema[] {
         placeholder: '请输入用户昵称',
       },
       rules: 'required',
-    },
-    {
-      fieldName: 'deptId',
-      label: '归属部门',
-      component: 'ApiTreeSelect',
-      componentProps: {
-        api: async () => {
-          const data = await getDeptList();
-          return handleTree(data);
-        },
-        labelField: 'name',
-        valueField: 'id',
-        childrenField: 'children',
-        placeholder: '请选择归属部门',
-        treeDefaultExpandAll: true,
-      },
-    },
-    {
-      fieldName: 'postIds',
-      label: '岗位',
-      component: 'ApiSelect',
-      componentProps: {
-        api: getSimplePostList,
-        labelField: 'name',
-        valueField: 'id',
-        mode: 'multiple',
-        placeholder: '请选择岗位',
-      },
     },
     {
       fieldName: 'email',
@@ -311,11 +280,6 @@ export function useGridColumns(
     {
       field: 'nickname',
       title: '用户昵称',
-      minWidth: 120,
-    },
-    {
-      field: 'deptName',
-      title: '部门',
       minWidth: 120,
     },
     {

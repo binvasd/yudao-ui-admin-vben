@@ -99,31 +99,6 @@ async function handelUpload({
         <DescriptionsItem>
           <template #label>
             <div class="flex items-center">
-              <IconifyIcon icon="ant-design:team-outlined" class="mr-1" />
-              所属部门
-            </div>
-          </template>
-          {{ profile.dept?.name }}
-        </DescriptionsItem>
-        <DescriptionsItem>
-          <template #label>
-            <div class="flex items-center">
-              <IconifyIcon
-                icon="ant-design:usergroup-add-outlined"
-                class="mr-1"
-              />
-              所属岗位
-            </div>
-          </template>
-          {{
-            profile.posts && profile.posts.length > 0
-              ? profile.posts.map((post) => post.name).join(',')
-              : '-'
-          }}
-        </DescriptionsItem>
-        <DescriptionsItem>
-          <template #label>
-            <div class="flex items-center">
               <IconifyIcon
                 icon="ant-design:clock-circle-outlined"
                 class="mr-1"

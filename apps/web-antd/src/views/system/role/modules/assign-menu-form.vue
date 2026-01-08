@@ -24,7 +24,6 @@ const emit = defineEmits(['success']);
 const menuTree = ref<SystemMenuApi.Menu[]>([]); // 菜单树
 const menuLoading = ref(false); // 加载菜单列表
 const isAllSelected = ref(false); // 全选状态
-const isExpanded = ref(false); // 展开状态
 const expandedKeys = ref<number[]>([]); // 展开的节点
 
 const [Form, formApi] = useVbenForm({
@@ -108,12 +107,6 @@ function handleSelectAll() {
   }
 }
 
-/** 展开/折叠所有节点 */
-function handleExpandAll() {
-  isExpanded.value = !isExpanded.value;
-  expandedKeys.value = isExpanded.value ? getAllNodeIds(menuTree.value) : [];
-}
-
 /** 递归获取所有节点 ID */
 function getAllNodeIds(nodes: any[], ids: number[] = []): number[] {
   nodes.forEach((node: any) => {
@@ -160,9 +153,6 @@ function getNodeClass(node: Recordable<any>) {
       <div class="flex flex-auto items-center">
         <Checkbox :checked="isAllSelected" @change="handleSelectAll">
           全选
-        </Checkbox>
-        <Checkbox :checked="isExpanded" @change="handleExpandAll">
-          全部展开
         </Checkbox>
       </div>
     </template>

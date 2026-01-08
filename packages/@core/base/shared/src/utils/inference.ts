@@ -70,6 +70,24 @@ function isHttpUrl(url?: string): boolean {
 }
 
 /**
+ * 检查传入的字符串去掉开头的'/'后，是否为有效的HTTP或HTTPS URL。
+ *
+ * @param {string} url 要检查的字符串。
+ * @return {string} 如果字符串去掉开头的'/'后，是有效的HTTP或HTTPS URL，返回true，否则返回false。
+ */
+function isHttpUrlTemp(url?: string): string | undefined {
+  if (!url) {
+    return url;
+  }
+  // 去掉开头的 '/'（可能有多个？但通常只有一个，按注释只去开头的）
+  // 使用 replace 只替换开头的 /（一次）
+  const trimmedUrl = url.replace(/^\//, '');
+  // 使用正则表达式测试URL是否以http:// 或 https:// 开头
+  const httpRegex = /^https?:\/\/.*$/;
+  return httpRegex.test(trimmedUrl) ? trimmedUrl : url;
+}
+
+/**
  * 检查传入的值是否为window对象。
  *
  * @param {any} value 要检查的值。
@@ -155,6 +173,7 @@ export {
   isEmpty,
   isFunction,
   isHttpUrl,
+  isHttpUrlTemp,
   isMacOs,
   isNumber,
   isObject,

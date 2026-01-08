@@ -91,7 +91,6 @@ function useMixedMenu() {
     }
     const rootMenu = menus.value.find((item) => item.path === key);
     const _splitSideMenus = rootMenu?.children ?? [];
-
     if (!willOpenedByWindow(key)) {
       rootMenuPath.value = rootMenu?.path ?? '';
       splitSideMenus.value = _splitSideMenus;

@@ -2,7 +2,12 @@ import type { RouteRecordNormalized } from 'vue-router';
 
 import { useRouter } from 'vue-router';
 
-import { isHttpUrl, openRouteInNewWindow, openWindow } from '@vben/utils';
+import {
+  isHttpUrl,
+  isHttpUrlTemp,
+  openRouteInNewWindow,
+  openWindow,
+} from '@vben/utils';
 
 function useNavigation() {
   const router = useRouter();
@@ -41,7 +46,8 @@ function useNavigation() {
     try {
       const route = routeMetaMap.get(path);
       const { openInNewWindow = false, query = {}, link } = route?.meta ?? {};
-
+      // 外部链接
+      path = isHttpUrlTemp(path);
       // 检查是否有外链
       if (link && typeof link === 'string') {
         openWindow(link, { target: '_blank' });

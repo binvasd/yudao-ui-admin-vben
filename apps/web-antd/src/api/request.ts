@@ -3,7 +3,7 @@
  */
 import type { RequestClientOptions } from '@vben/request';
 
-import { isTenantEnable, useAppConfig } from '@vben/hooks';
+import { useAppConfig } from '@vben/hooks';
 import { preferences } from '@vben/preferences';
 import {
   authenticateResponseInterceptor,
@@ -21,7 +21,6 @@ import { useAuthStore } from '#/store';
 import { refreshTokenApi } from './core';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
-const tenantEnable = isTenantEnable();
 const apiEncrypt = createApiEncrypt(import.meta.env);
 
 function createRequestClient(baseURL: string, options?: RequestClientOptions) {
@@ -78,15 +77,6 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
 
       config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
-      // 添加租户编号
-      config.headers['tenant-id'] = tenantEnable
-        ? accessStore.tenantId
-        : undefined;
-      // 只有登录时，才设置 visit-tenant-id 访问租户
-      config.headers['visit-tenant-id'] = tenantEnable
-        ? accessStore.visitTenantId
-        : undefined;
-
       // 是否 API 加密
       if ((config.headers || {}).isEncrypt) {
         try {
@@ -173,15 +163,6 @@ export const requestClient = createRequestClient(apiURL, {
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });
 baseRequestClient.addRequestInterceptor({
   fulfilled: (config) => {
-    const accessStore = useAccessStore();
-    // 添加租户编号
-    config.headers['tenant-id'] = tenantEnable
-      ? accessStore.tenantId
-      : undefined;
-    // 只有登录时，才设置 visit-tenant-id 访问租户
-    config.headers['visit-tenant-id'] = tenantEnable
-      ? accessStore.visitTenantId
-      : undefined;
     return config;
   },
 });

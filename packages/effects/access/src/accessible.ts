@@ -29,10 +29,8 @@ async function generateAccessible(
   const accessibleRoutes = await generateRoutes(mode, options);
 
   const root = router.getRoutes().find((item) => item.path === '/');
-
   // 获取已有的路由名称列表
   const names = root?.children?.map((item) => item.name) ?? [];
-
   // 动态添加到router实例内
   accessibleRoutes.forEach((route) => {
     if (root && !route.meta?.noBasicLayout) {

@@ -4,7 +4,7 @@ import type { SystemRoleApi } from '#/api/system/role';
 
 import { ref } from 'vue';
 
-import { confirm, DocAlert, Page, useVbenModal } from '@vben/common-ui';
+import { confirm, Page, useVbenModal } from '@vben/common-ui';
 import { downloadFileFromBlobPart, isEmpty } from '@vben/utils';
 
 import { message } from 'ant-design-vue';
@@ -28,11 +28,10 @@ const [FormModal, formModalApi] = useVbenModal({
   destroyOnClose: true,
 });
 
-const [AssignDataPermissionFormModel, assignDataPermissionFormApi] =
-  useVbenModal({
-    connectedComponent: AssignDataPermissionForm,
-    destroyOnClose: true,
-  });
+const [AssignDataPermissionFormModel] = useVbenModal({
+  connectedComponent: AssignDataPermissionForm,
+  destroyOnClose: true,
+});
 
 const [AssignMenuFormModel, assignMenuFormApi] = useVbenModal({
   connectedComponent: AssignMenuForm,
@@ -101,11 +100,6 @@ function handleRowCheckboxChange({
   checkedIds.value = records.map((item) => item.id!);
 }
 
-/** 分配角色的数据权限 */
-function handleAssignDataPermission(row: SystemRoleApi.Role) {
-  assignDataPermissionFormApi.setData(row).open();
-}
-
 /** 分配角色的菜单权限 */
 function handleAssignMenu(row: SystemRoleApi.Role) {
   assignMenuFormApi.setData(row).open();
@@ -148,14 +142,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
 
 <template>
   <Page auto-content-height>
-    <template #doc>
-      <DocAlert
-        title="功能权限"
-        url="https://doc.iocoder.cn/resource-permission"
-      />
-      <DocAlert title="数据权限" url="https://doc.iocoder.cn/data-permission" />
-    </template>
-
     <FormModal @success="handleRefresh" />
     <AssignDataPermissionFormModel @success="handleRefresh" />
     <AssignMenuFormModel @success="handleRefresh" />
@@ -212,12 +198,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
             },
           ]"
           :drop-down-actions="[
-            {
-              label: '数据权限',
-              type: 'link',
-              auth: ['system:permission:assign-role-data-scope'],
-              onClick: handleAssignDataPermission.bind(null, row),
-            },
             {
               label: '菜单权限',
               type: 'link',
